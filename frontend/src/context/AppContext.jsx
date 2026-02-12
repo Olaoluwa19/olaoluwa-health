@@ -5,6 +5,7 @@ export const AppContext = createContext(null);
 
 /** @param {{ children: React.ReactNode }} props */
 const AppContextProvider = (props) => {
+  const currencySymbol = "$";
   const value = {
     doctors,
   };
