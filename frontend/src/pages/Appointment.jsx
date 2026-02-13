@@ -95,8 +95,14 @@ const Appointment = () => {
             />
           </figure>
 
-          <article className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 -mt-20 sm:mt-0">
-            <h2 className="flex items-center gap-2 text-2xl font-medium text-gray-900">
+          <article
+            className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 -mt-20 sm:mt-0"
+            aria-labelledby="doctor-name-heading"
+          >
+            <h2
+              id="doctor-name-heading"
+              className="flex items-center gap-2 text-2xl font-medium text-gray-900"
+            >
               {docInfo.name}{" "}
               <img
                 className="w-5"
@@ -118,6 +124,7 @@ const Appointment = () => {
                   className="w-3"
                   src={assets.info_icon}
                   alt="About information"
+                  aria-hidden="true"
                 />
               </h3>
               <p className="text-sm text-gray-500 max-w-175 mt-1">
