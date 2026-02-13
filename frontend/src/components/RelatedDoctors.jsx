@@ -46,6 +46,7 @@ const RelatedDoctors = ({ speciality, docId }) => {
               onClick={(e) => {
                 e.preventDefault();
                 navigate(`/appointment/${item._id}`);
+                scrollTo(0, 0);
               }}
             >
               <img
