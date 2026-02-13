@@ -5,12 +5,12 @@ import TopDoctors from "@/components/TopDoctors";
 
 const Home = () => {
   return (
-    <div>
+    <main>
       <Header />
       <SpecialityMenu />
       <TopDoctors />
       <Banner />
-    </div>
+    </main>
   );
 };
 
