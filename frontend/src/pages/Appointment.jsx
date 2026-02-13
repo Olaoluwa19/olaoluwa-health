@@ -1,4 +1,5 @@
 import { assets } from "@/assets/assets_frontend/assets";
+import RelatedDoctors from "@/components/RelatedDoctors";
 import { AppContext } from "@/context/AppContext";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -93,14 +94,14 @@ const Appointment = () => {
 
           <article className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 -mt-20 sm:mt-0">
             {/* --------- Doc Info : name, degree, experience ---------- */}
-            <h1 className="flex items-center gap-2 text-2xl font-medium text-gray-900">
+            <h2 className="flex items-center gap-2 text-2xl font-medium text-gray-900">
               {docInfo.name}{" "}
               <img
                 className="w-5"
                 src={assets.verified_icon}
                 alt="Verified doctor"
               />
-            </h1>
+            </h2>
             <p className="flex items-center gap-2 text-sm mt-1 text-gray-600">
               {docInfo.degree} — {docInfo.speciality}
               <span className="py-0.5 px-2 border text-xs rounded-full">
@@ -109,9 +110,9 @@ const Appointment = () => {
             </p>
             {/* --------- Doctors About ---------- */}
             <section>
-              <h2 className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
+              <h3 className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
                 About <img className="w-3" src={assets.info_icon} alt="Info" />
-              </h2>
+              </h3>
               <p className="text-sm text-gray-500 max-w-175 mt-1">
                 {docInfo.about}
               </p>
@@ -159,6 +160,8 @@ const Appointment = () => {
             Book an appointment
           </button>
         </article>
+        {/* Listing Related Doctors */}
+        <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
       </main>
     )
   );
