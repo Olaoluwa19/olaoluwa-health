@@ -22,6 +22,8 @@ const Navbar = () => {
         <img
           className="w-44 cursor-pointer"
           src={assets.logo_olaoluwa}
+          width="404"
+          height="160"
           alt="Olaoluwa Wellness logo"
         />
       </a>
@@ -134,30 +136,46 @@ const Navbar = () => {
           onClick={() => setShowMenu(true)}
           className="w-6 md:hidden"
           src={assets.menu_icon}
-          alt="menu icon"
+          alt="menu icon button"
         />
         {/* Mobile Menu */}
-        <aside>
-          <figure>
-            <img src={assets.logo_olaoluwa} alt="" aria-hidden />
+        <aside
+          className={`${showMenu ? "fixed w-full" : "h-0 w-0"} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
+        >
+          <figure className="flex items-center justify-between px-5 py-6">
             <img
+              className="w-36"
+              onClick={() => setShowMenu(true)}
+              src={assets.logo_olaoluwa}
+              width="404"
+              height="160"
+              alt=""
+              aria-hidden
+            />
+            <img
+              className="w-7"
               onClick={() => setShowMenu(false)}
               src={assets.cross_icon}
-              alt="close menu"
+              width="100"
+              height="100"
+              alt="close menu button"
             />
           </figure>
-          <nav aria-label="mobile-nav">
-            <NavLink to="/" end>
-              HOME
+          <nav
+            className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium"
+            aria-label="mobile-nav"
+          >
+            <NavLink onClick={() => setShowMenu(false)} to="/" end>
+              <p className="px-4 py-2 rounded inline-block">HOME</p>
             </NavLink>
-            <NavLink to="/doctors" end>
-              ALL DOCTORS
+            <NavLink onClick={() => setShowMenu(false)} to="/doctors" end>
+              <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
             </NavLink>
-            <NavLink to="/about" end>
-              ABOUT
+            <NavLink onClick={() => setShowMenu(false)} to="/about" end>
+              <p className="px-4 py-2 rounded inline-block">ABOUT</p>
             </NavLink>
-            <NavLink to="/contact" end>
-              CONTACT
+            <NavLink onClick={() => setShowMenu(false)} to="/contact" end>
+              <p className="px-4 py-2 rounded inline-block">CONTACT</p>
             </NavLink>
           </nav>
         </aside>
