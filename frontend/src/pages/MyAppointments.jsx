@@ -12,7 +12,7 @@ const MyAppointments = () => {
         <h2 className="sr-only" id="appointments-heading">
           My Appointments
         </h2>
-        {doctors.slice(0, 2).map((item, index) => (
+        {doctors.slice(0, 3).map((item, index) => (
           <div
             className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 bprder-b"
             key={index}
