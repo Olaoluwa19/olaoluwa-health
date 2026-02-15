@@ -130,6 +130,37 @@ const Navbar = () => {
             Create account
           </button>
         )}
+        <img
+          onClick={() => setShowMenu(true)}
+          className="w-6 md:hidden"
+          src={assets.menu_icon}
+          alt="menu icon"
+        />
+        {/* Mobile Menu */}
+        <aside>
+          <figure>
+            <img src={assets.logo_olaoluwa} alt="" aria-hidden />
+            <img
+              onClick={() => setShowMenu(false)}
+              src={assets.cross_icon}
+              alt="close menu"
+            />
+          </figure>
+          <nav aria-label="mobile-nav">
+            <NavLink to="/" end>
+              HOME
+            </NavLink>
+            <NavLink to="/doctors" end>
+              ALL DOCTORS
+            </NavLink>
+            <NavLink to="/about" end>
+              ABOUT
+            </NavLink>
+            <NavLink to="/contact" end>
+              CONTACT
+            </NavLink>
+          </nav>
+        </aside>
       </div>
     </header>
   );
