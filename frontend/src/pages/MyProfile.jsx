@@ -173,7 +173,7 @@ const MyProfile = () => {
             </button>
             <button
               type="button"
-              className="border border-gray-400 px-8 py-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="border border-gray-400 px-8 py-2 rounded-full hover:hover:bg-red-600 hover:text-white transition-colors"
               onClick={() => setIsEdit(false)}
             >
               Cancel
