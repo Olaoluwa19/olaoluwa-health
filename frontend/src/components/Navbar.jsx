@@ -197,17 +197,45 @@ const Navbar = () => {
               className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium"
               aria-label="mobile-nav"
             >
-              <NavLink onClick={() => setShowMenu(false)} to="/" end>
-                <p className="px-4 py-2 rounded inline-block">HOME</p>
+              <NavLink
+                className={({ isActive }) =>
+                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
+                }
+                onClick={() => setShowMenu(false)}
+                to="/"
+                end
+              >
+                HOME
               </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/doctors" end>
-                <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
+              <NavLink
+                className={({ isActive }) =>
+                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
+                }
+                onClick={() => setShowMenu(false)}
+                to="/doctors"
+                end
+              >
+                ALL DOCTORS
               </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/about" end>
-                <p className="px-4 py-2 rounded inline-block">ABOUT</p>
+              <NavLink
+                className={({ isActive }) =>
+                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
+                }
+                onClick={() => setShowMenu(false)}
+                to="/about"
+                end
+              >
+                ABOUT
               </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/contact" end>
-                <p className="px-4 py-2 rounded inline-block">CONTACT</p>
+              <NavLink
+                className={({ isActive }) =>
+                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
+                }
+                onClick={() => setShowMenu(false)}
+                to="/contact"
+                end
+              >
+                CONTACT
               </NavLink>
             </nav>
           </aside>
