@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { assets } from "../assets/assets_frontend/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -7,6 +7,19 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [token, setToken] = useState(true);
+  const hamburgerRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
+  const openMenu = () => {
+    setShowMenu(true);
+    // Focus close button after render
+    setTimeout(() => closeButtonRef.current?.focus(), 100);
+  };
+
+  const closeMenu = () => {
+    setShowMenu(false);
+    hamburgerRef.current?.focus();
+  };
 
   return (
     <header className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
@@ -132,53 +145,73 @@ const Navbar = () => {
             Create account
           </button>
         )}
-        <img
-          onClick={() => setShowMenu(true)}
-          className="w-6 md:hidden"
-          src={assets.menu_icon}
-          alt="menu icon button"
-        />
-        {/* Mobile Menu */}
-        <aside
-          className={`${showMenu ? "fixed w-full" : "h-0 w-0"} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
+        <button
+          ref={hamburgerRef}
+          type="button"
+          aria-label="Open mobile menu"
+          aria-expanded={showMenu}
+          onClick={openMenu}
+          className="flex items-center py-2 px-2 gap-2 cursor-pointer group md:hidden"
         >
-          <figure className="flex items-center justify-between px-5 py-6">
-            <img
-              className="w-36"
-              onClick={() => setShowMenu(true)}
-              src={assets.logo_olaoluwa}
-              width="404"
-              height="160"
-              alt=""
-              aria-hidden
-            />
-            <img
-              className="w-7"
-              onClick={() => setShowMenu(false)}
-              src={assets.cross_icon}
-              width="100"
-              height="100"
-              alt="close menu button"
-            />
-          </figure>
-          <nav
-            className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium"
-            aria-label="mobile-nav"
-          >
-            <NavLink onClick={() => setShowMenu(false)} to="/" end>
-              <p className="px-4 py-2 rounded inline-block">HOME</p>
-            </NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to="/doctors" end>
-              <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
-            </NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to="/about" end>
-              <p className="px-4 py-2 rounded inline-block">ABOUT</p>
-            </NavLink>
-            <NavLink onClick={() => setShowMenu(false)} to="/contact" end>
-              <p className="px-4 py-2 rounded inline-block">CONTACT</p>
-            </NavLink>
-          </nav>
-        </aside>
+          <img
+            className="w-6"
+            src={assets.menu_icon}
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
+        {/* Mobile Menu */}
+        {showMenu && (
+          <aside className="fixed inset-0 z-20 bg-white md:hidden">
+            <figure className="flex items-center justify-between px-5 py-6">
+              <img
+                className="w-36 cursor-pointer"
+                src={assets.logo_olaoluwa}
+                alt="Olaoluwa Wellness logo"
+                width="404"
+                height="160"
+                onClick={() => {
+                  closeMenu();
+                  navigate("/");
+                }}
+              />
+              <button
+                ref={closeButtonRef}
+                type="button"
+                onClick={closeMenu}
+                aria-label="Close navigation menu"
+                className="flex items-center py-2 px-2 gap-2 cursor-pointer group"
+              >
+                <img
+                  className="w-7 h-7"
+                  src={assets.cross_icon}
+                  width="100"
+                  height="100"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </button>
+            </figure>
+            <nav
+              className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium"
+              aria-label="mobile-nav"
+            >
+              <NavLink onClick={() => setShowMenu(false)} to="/" end>
+                <p className="px-4 py-2 rounded inline-block">HOME</p>
+              </NavLink>
+              <NavLink onClick={() => setShowMenu(false)} to="/doctors" end>
+                <p className="px-4 py-2 rounded inline-block">ALL DOCTORS</p>
+              </NavLink>
+              <NavLink onClick={() => setShowMenu(false)} to="/about" end>
+                <p className="px-4 py-2 rounded inline-block">ABOUT</p>
+              </NavLink>
+              <NavLink onClick={() => setShowMenu(false)} to="/contact" end>
+                <p className="px-4 py-2 rounded inline-block">CONTACT</p>
+              </NavLink>
+            </nav>
+          </aside>
+        )}
       </div>
     </header>
   );
