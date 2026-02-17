@@ -163,8 +163,26 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {showMenu && (
-          <aside className="fixed inset-0 z-20 bg-white md:hidden">
-            <figure className="flex items-center justify-between px-5 py-6">
+          // Backdrop - only when menu is open
+          <div
+            className="fixed inset-0 z-40 bg-black/40 md:hidden transition-opacity duration-300"
+            onClick={closeMenu}
+            aria-hidden="true"
+          />
+        )}
+
+        {/* Right sliding drawer */}
+        <aside
+          className={`
+    fixed top-0 bottom-0 right-0 z-50 w-4/5 max-w-sm bg-white shadow-2xl
+    transform transition-transform duration-300 ease-in-out md:hidden
+    ${showMenu ? "translate-x-0" : "translate-x-full"}
+  `}
+          aria-label="Mobile navigation menu"
+        >
+          <div className="flex flex-col h-full">
+            {/* Header with logo + close */}
+            <div className="flex items-center justify-between px-5 py-6 border-b">
               <img
                 className="w-36 cursor-pointer"
                 src={assets.logo_olaoluwa}
@@ -181,65 +199,85 @@ const Navbar = () => {
                 type="button"
                 onClick={closeMenu}
                 aria-label="Close navigation menu"
-                className="flex items-center py-2 px-2 gap-2 cursor-pointer group"
+                className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <img
                   className="w-7 h-7"
                   src={assets.cross_icon}
-                  width="100"
-                  height="100"
                   alt=""
                   aria-hidden="true"
                 />
               </button>
-            </figure>
-            <nav
-              className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium"
-              aria-label="mobile-nav"
-            >
-              <NavLink
-                className={({ isActive }) =>
-                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
-                }
-                onClick={() => setShowMenu(false)}
-                to="/"
-                end
-              >
-                HOME
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
-                }
-                onClick={() => setShowMenu(false)}
-                to="/doctors"
-                end
-              >
-                ALL DOCTORS
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
-                }
-                onClick={() => setShowMenu(false)}
-                to="/about"
-                end
-              >
-                ABOUT
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `w-full text-center py-4 px-4 ${isActive ? "text-white bg-primary rounded font-bold" : ""}`
-                }
-                onClick={() => setShowMenu(false)}
-                to="/contact"
-                end
-              >
-                CONTACT
-              </NavLink>
+            </div>
+
+            {/* Navigation links */}
+            <nav className="flex-1 px-5 py-8 overflow-y-auto">
+              <ul className="flex flex-col gap-2 text-lg font-medium">
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block w-full text-center py-4 px-6 rounded-xl transition-colors ${
+                        isActive
+                          ? "text-white bg-primary font-bold shadow-sm"
+                          : "text-gray-800 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={closeMenu}
+                    to="/"
+                    end
+                  >
+                    HOME
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block w-full text-center py-4 px-6 rounded-xl transition-colors ${
+                        isActive
+                          ? "text-white bg-primary font-bold shadow-sm"
+                          : "text-gray-800 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={closeMenu}
+                    to="/doctors"
+                  >
+                    ALL DOCTORS
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block w-full text-center py-4 px-6 rounded-xl transition-colors ${
+                        isActive
+                          ? "text-white bg-primary font-bold shadow-sm"
+                          : "text-gray-800 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={closeMenu}
+                    to="/about"
+                  >
+                    ABOUT
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `block w-full text-center py-4 px-6 rounded-xl transition-colors ${
+                        isActive
+                          ? "text-white bg-primary font-bold shadow-sm"
+                          : "text-gray-800 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={closeMenu}
+                    to="/contact"
+                  >
+                    CONTACT
+                  </NavLink>
+                </li>
+              </ul>
             </nav>
-          </aside>
-        )}
+          </div>
+        </aside>
       </div>
     </header>
   );
