@@ -30,7 +30,7 @@ const Doctors = () => {
         aria-labelledby="speciality-heading"
       >
         {/* Mobile Filters Button + Dropdown */}
-        <div className="w-full md:hidden">
+        <section className="w-full md:hidden">
           <button
             type="button"
             aria-label="Toggle filter menu"
@@ -39,7 +39,7 @@ const Doctors = () => {
             onClick={() => setShowFilter(!showFilter)}
             className="flex items-center justify-between w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            <span className="font-medium">Filter by Speciality</span>
+            <h2 className="font-medium">Filter by Speciality</h2>
             <span
               className={`transform transition-transform ${showFilter ? "rotate-180" : ""}`}
             >
@@ -48,12 +48,12 @@ const Doctors = () => {
           </button>
 
           {/* Expanding panel – only visible when toggled */}
-          <div
+          <aside
             id="mobile-filter-panel"
             className={`
-        overflow-hidden transition-all duration-300 ease-in-out
-        ${showFilter ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
-      `}
+            overflow-hidden transition-all duration-300 ease-in-out
+            ${showFilter ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+          `}
           >
             <div className="bg-white border border-gray-200 border-t-0 rounded-b-lg px-4 py-5">
               <nav aria-label="Doctor specialities">
@@ -93,8 +93,8 @@ const Doctors = () => {
                 </ul>
               </nav>
             </div>
-          </div>
-        </div>
+          </aside>
+        </section>
 
         {/* Desktop Sidebar – always visible on md+ */}
         <aside className="hidden md:block md:w-64 shrink-0">
