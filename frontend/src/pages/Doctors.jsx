@@ -1,12 +1,12 @@
 import { AppContext } from "@/context/AppContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Doctors = () => {
   const { speciality } = useParams();
   const [filterDoc, setFilterDoc] = useState([]);
+  const [showFilter, setShowFilter] = useState(false);
   const navigate = useNavigate();
-
   const { doctors } = useContext(AppContext);
 
   const applyFilter = () => {
@@ -27,19 +27,86 @@ const Doctors = () => {
 
       <section
         className="flex flex-col sm:flex-row items-start gap-5 mt-5"
-        aria-labelledby="speciality-heading" // better than aria-label for landmark
+        aria-labelledby="speciality-heading"
       >
-        <aside className="sm:w-64 shrink-0">
-          {" "}
-          {/* aside for sidebar/filter */}
+        {/* Mobile Filters Button + Dropdown */}
+        <div className="w-full md:hidden">
+          <button
+            type="button"
+            aria-label="Toggle filter menu"
+            aria-expanded={showFilter}
+            aria-controls="mobile-filter-panel"
+            onClick={() => setShowFilter(!showFilter)}
+            className="flex items-center justify-between w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <span className="font-medium">Filter by Speciality</span>
+            <span
+              className={`transform transition-transform ${showFilter ? "rotate-180" : ""}`}
+            >
+              ▼
+            </span>
+          </button>
+
+          {/* Expanding panel – only visible when toggled */}
+          <div
+            id="mobile-filter-panel"
+            className={`
+        overflow-hidden transition-all duration-300 ease-in-out
+        ${showFilter ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+      `}
+          >
+            <div className="bg-white border border-gray-200 border-t-0 rounded-b-lg px-4 py-5">
+              <nav aria-label="Doctor specialities">
+                <ul className="flex flex-col gap-2">
+                  {[
+                    "General physician",
+                    "Gynecologist",
+                    "Dermatologist",
+                    "Pediatricians",
+                    "Neurologist",
+                    "Gastroenterologist",
+                  ].map((spec) => {
+                    const isActive = speciality === spec;
+                    const url = isActive ? "/doctors" : `/doctors/${spec}`;
+
+                    return (
+                      <li key={spec}>
+                        <a
+                          href={url}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(url);
+                            setShowFilter(false); // auto-close after selection
+                          }}
+                          className={`block py-3 px-4 rounded-lg transition-colors ${
+                            isActive
+                              ? "bg-indigo-100 text-indigo-800 font-medium"
+                              : "text-gray-700 hover:bg-gray-100"
+                          }`}
+                          aria-current={isActive ? "page" : undefined}
+                        >
+                          {spec}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Sidebar – always visible on md+ */}
+        <aside className="hidden md:block md:w-64 shrink-0">
           <h2
             id="speciality-heading"
-            className="text-gray-800 text-lg font-medium mb-4 sr-only sm:not-sr-only"
+            className="text-gray-800 text-lg font-medium mb-4"
           >
             Filter by Speciality
           </h2>
-          <nav aria-label="Doctor specialities">
+          <nav aria-label="Doctor specialities" className="flex flex-col gap-3">
             <ul className="flex flex-col gap-3">
+              {/* same list items as above – you can extract to a component if you want to avoid duplication */}
               {[
                 "General physician",
                 "Gynecologist",
@@ -55,10 +122,14 @@ const Doctors = () => {
                   <li key={spec}>
                     <a
                       href={url}
-                      className={`block pl-4 py-2 pr-8 border border-gray-300 rounded transition-all hover:bg-indigo-50 focus-visible:bg-indigo-100 focus-visible:outline  focus-visible:outline-indigo-500 ${
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(url);
+                      }}
+                      className={`block pl-4 py-2.5 pr-8 border border-gray-200 rounded-xl transition-all hover:bg-indigo-50 hover:border-indigo-200 ${
                         isActive
-                          ? "bg-indigo-100 text-black font-medium"
-                          : "text-gray-600"
+                          ? "bg-indigo-100 border-indigo-200 text-black font-semibold"
+                          : "text-gray-700"
                       }`}
                       aria-current={isActive ? "page" : undefined}
                     >
@@ -71,7 +142,8 @@ const Doctors = () => {
           </nav>
         </aside>
 
-        <div className="w-full">
+        {/* Doctors Grid */}
+        <div className="w-full flex-1 min-w-0">
           {filterDoc.length === 0 ? (
             <p className="text-center text-gray-500 py-10">
               No doctors found for this speciality.
@@ -84,7 +156,7 @@ const Doctors = () => {
               {filterDoc.map((item) => (
                 <li
                   key={item._id}
-                  className="border border-blue-200 rounded-xl overflow-hidden hover:-translate-y-2 transition-all duration-300 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
+                  className="border border-blue-200 rounded-xl overflow-hidden hover:-translate-y-1 transition-all duration-300 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2"
                 >
                   <a
                     href={`/appointment/${item._id}`}
@@ -95,7 +167,7 @@ const Doctors = () => {
                     }}
                   >
                     <img
-                      className="bg-blue-50 w-full"
+                      className="bg-blue-50 w-full aspect-5/3 object-cover"
                       src={item.image}
                       alt={`Dr. ${item.name}, ${item.speciality}`}
                       loading="lazy"
