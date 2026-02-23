@@ -1,18 +1,26 @@
-import express from "express";
-import cors from "cors";
 import "dotenv/config";
+import mongoose from "mongoose";
+import http from "http";
+import app from "./app.js";
+import connectDB from "./config/mongodb.js";
 
-// app config
-const app = express();
-const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
-// midlleware
-app.use(express.json());
-app.use(cors());
+const server = http.createServer(app);
 
-// api endpoints
-app.get("/", (req, res) => {
-  res.send("API running...");
-});
+const startServer = async () => {
+  try {
+    // connect to mongoDB
+    connectDB();
+    mongoose.connection.once("open", () => {
+      console.log("Connected to MongoDB");
+      server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
+    });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+  }
+};
 
-app.listen(port, () => console.log("Server Started", port));
+startServer();
