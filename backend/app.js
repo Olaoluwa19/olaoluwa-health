@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import credentials from "./middleware/credentials.js";
 import corsOptions from "./config/corsOption.js";
 import errorHandler from "./middleware/errorHandler.js";
+import { logger } from "./middleware/logEvent.js";
 
 // Define __dirname and __filename for ESM compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -13,6 +14,9 @@ const __dirname = path.dirname(__filename);
 
 // app config
 const app = express();
+
+// custom middleware logger
+app.use(logger);
 
 // Handle options credential check before cors
 app.use(credentials);
