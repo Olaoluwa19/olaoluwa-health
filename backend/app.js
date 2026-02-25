@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
-import credentials from "./middleware/credentials.js";
-import corsOptions from "./config/corsOption";
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
+import credentials from "./middleware/credentials.js";
+import corsOptions from "./config/corsOption.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 // Define __dirname and __filename for ESM compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -38,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("API running...");
 });
 
-app.all("*", (req, res) => {
+app.all("/{*path}", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(path.join(__dirname, "views", "404.html"));
