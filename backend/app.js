@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import api from "./routes/api.js";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import credentials from "./middleware/credentials.js";
@@ -39,10 +40,8 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 // health check route
 app.get("/health", (req, res) => res.json({ status: "OK" }));
 
-// api endpoints
-app.get("/", (req, res) => {
-  res.send("API running...");
-});
+// API routes
+app.use("/api", api);
 
 app.all("/{*path}", (req, res) => {
   res.status(404);
