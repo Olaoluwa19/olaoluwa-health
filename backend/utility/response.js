@@ -1,65 +1,68 @@
-import { validationResult } from "express-validator";
+/**
+ * Unified response sender
+ * @param {import('express').Response} res
+ * @param {number} statusCode
+ * @param {object} body
+ */
+export function sendResponse(res, statusCode, body) {
+  res.status(statusCode).json(body);
+}
 
-const formatResponse = (statusCode, message, data) => ({
-  statusCode,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers":
-      "Content-Type,X-Amz-Date,Authorization,x-api-key,x-requested-with",
-    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE,PATCH",
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
+// Success helpers
+export function ok(res, data = null, message = "Success") {
+  return sendResponse(res, 200, { status: "success", message, data });
+}
+
+export function created(res, data = null, message = "Resource created") {
+  return sendResponse(res, 201, { status: "success", message, data });
+}
+
+export function noContent(res) {
+  return res.sendStatus(204);
+}
+
+// Error helpers
+export function errorResponse(res, statusCode, message, error = null) {
+  const body = {
+    status: "error",
     message,
-    ...(data !== undefined && { data }),
-  }),
-});
+  };
 
-// Success responses (unchanged)
-export const SuccessResponse = (data, statusCode = 200) => {
-  return formatResponse(statusCode, "Success", data);
-};
-
-export const CreatedResponse = (data) => SuccessResponse(data, 201);
-
-// Error responses — updated
-export const ErrorResponse = (statusCode, error) => {
-  // Handle express-validator errors
-  if (Array.isArray(error) && error.every((e) => e?.msg && e?.path)) {
-    const formattedErrors = error.map((err) => ({
-      field: err.path,
-      value: err.value, // may or may not exist
-      message: err.msg,
-      // location: err.location   // body / query / params — optional
-    }));
-
-    return formatResponse(statusCode, "Validation failed", formattedErrors);
+  // Include error detail in development or when explicitly wanted
+  if (process.env.NODE_ENV !== "production" && error) {
+    body.error = error instanceof Error ? error.message : String(error);
+    body.stack = error?.stack;
   }
 
-  // Handle regular Error objects
-  if (error instanceof Error) {
-    return formatResponse(statusCode, error.message);
+  // Always log real errors (4xx usually not)
+  if (statusCode >= 500) {
+    console.error(`[${statusCode}] ${message}`, error);
   }
 
-  // Fallback
-  const message =
-    typeof error === "string" ? error : "An unexpected error occurred";
-  return formatResponse(statusCode, message);
-};
+  return sendResponse(res, statusCode, body);
+}
 
-// Convenience wrappers (unchanged)
-export const BadRequest = (error) => {
-  console.log("Bad request error:", error);
-  return ErrorResponse(400, error);
-};
+// Convenience wrappers (keep only the ones you actually use)
+export function badRequest(res, message = "Bad Request", error = null) {
+  return errorResponse(res, 400, message, error);
+}
 
-export const NotFound = (message = "Resource not found") =>
-  ErrorResponse(404, message);
+export function unauthorized(res, message = "Unauthorized", error = null) {
+  return errorResponse(res, 401, message, error);
+}
 
-export const Unauthorized = (message = "Unauthorized") =>
-  ErrorResponse(401, message);
+export function forbidden(res, message = "Forbidden", error = null) {
+  return errorResponse(res, 403, message, error);
+}
 
-export const InternalError = (error) => {
-  console.log("Internal server error:", error);
-  return ErrorResponse(500, error || "Internal server error");
-};
+export function notFound(res, message = "Not Found", error = null) {
+  return errorResponse(res, 404, message, error);
+}
+
+export function serverError(
+  res,
+  message = "Internal Server Error",
+  error = null,
+) {
+  return errorResponse(res, 500, message, error ?? new Error(message));
+}
