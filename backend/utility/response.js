@@ -1,4 +1,4 @@
-import { ValidationError } from "class-validator";
+import { validationResult } from "express-validator";
 
 const formatResponse = (statusCode, message, data) => ({
   statusCode,
@@ -15,26 +15,22 @@ const formatResponse = (statusCode, message, data) => ({
   }),
 });
 
-// Success responses
+// Success responses (unchanged)
 export const SuccessResponse = (data, statusCode = 200) => {
   return formatResponse(statusCode, "Success", data);
 };
 
-export const CreatedResponse = (data) => {
-  return SuccessResponse(data, 201);
-};
+export const CreatedResponse = (data) => SuccessResponse(data, 201);
 
-// Error responses
+// Error responses — updated
 export const ErrorResponse = (statusCode, error) => {
-  // Handle class-validator errors properly
-  if (
-    Array.isArray(error) &&
-    error.every((e) => e instanceof ValidationError)
-  ) {
+  // Handle express-validator errors
+  if (Array.isArray(error) && error.every((e) => e?.msg && e?.path)) {
     const formattedErrors = error.map((err) => ({
-      field: err.property,
-      value: err.value,
-      constraints: err.constraints,
+      field: err.path,
+      value: err.value, // may or may not exist
+      message: err.msg,
+      // location: err.location   // body / query / params — optional
     }));
 
     return formatResponse(statusCode, "Validation failed", formattedErrors);
@@ -51,15 +47,18 @@ export const ErrorResponse = (statusCode, error) => {
   return formatResponse(statusCode, message);
 };
 
-// Convenience wrappers
+// Convenience wrappers (unchanged)
 export const BadRequest = (error) => {
   console.log("Bad request error:", error);
   return ErrorResponse(400, error);
 };
+
 export const NotFound = (message = "Resource not found") =>
   ErrorResponse(404, message);
+
 export const Unauthorized = (message = "Unauthorized") =>
   ErrorResponse(401, message);
+
 export const InternalError = (error) => {
   console.log("Internal server error:", error);
   return ErrorResponse(500, error || "Internal server error");
