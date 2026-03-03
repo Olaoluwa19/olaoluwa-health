@@ -54,6 +54,6 @@ app.all("/*path", (req, res) => {
   }
 });
 
-app.use(errorHandler);
+app.use(errorHandler());
 
 export default app;
