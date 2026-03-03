@@ -26,6 +26,8 @@ node_modules/
 **/build
 /dist
 **/dist
+/public/uploads
+**/public/uploads
 
 # Testing
 /coverage
