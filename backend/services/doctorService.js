@@ -1,8 +1,9 @@
-import Doctor from "../models/Doctor.js";
+import Doctor from "../models/doctorModel.js";
+import { getImage } from "../utility/utils.js";
 
 class DoctorService {
   constructor() {}
-  static async createDoctor(doctorData) {
+  static async createDoctorField(doctorData) {
     const {
       name,
       email,
@@ -13,8 +14,15 @@ class DoctorService {
       about,
       fees,
       address,
-    } = doctorData;
-    const doctor = new Doctor({
+    } = doctorData.body;
+    // handles image upload
+    const file = doctorData.file;
+    if (!file) {
+      throw new Error("Image file is required");
+    }
+    const imageUrl = await getImage(doctorData);
+
+    const doctor = await Doctor.create({
       name,
       email,
       password,
@@ -24,8 +32,9 @@ class DoctorService {
       about,
       fees,
       address,
+      imageUrl,
     });
-    await doctor.save();
+
     return doctor;
   }
 }
