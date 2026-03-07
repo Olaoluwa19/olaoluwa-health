@@ -10,11 +10,11 @@ const sendResponse = (res, statusCode, body) => {
 
 // Success helpers
 const ok = (res, data = null, message = "Success") => {
-  return (sendResponse = (res, 200, { status: "success", message, data }));
+  return sendResponse(res, 200, { status: "success", message, data });
 };
 
 const created = (res, data = null, message = "Resource created") => {
-  return (sendResponse = (res, 201, { status: "success", message, data }));
+  return sendResponse(res, 201, { status: "success", message, data });
 };
 
 const noContent = (res) => {
@@ -39,28 +39,28 @@ const errorResponse = (res, statusCode, message, error = null) => {
     console.error(`[${statusCode}] ${message}`, error);
   }
 
-  return (sendResponse = (res, statusCode, body));
+  return sendResponse(res, statusCode, body);
 };
 
 // Convenience wrappers (keep only the ones you actually use)
 const badRequest = (res, message = "Bad Request", error = null) => {
-  return (errorResponse = (res, 400, message, error));
+  return errorResponse(res, 400, message, error);
 };
 
 const unauthorized = (res, message = "Unauthorized", error = null) => {
-  return (errorResponse = (res, 401, message, error));
+  return errorResponse(res, 401, message, error);
 };
 
 const forbidden = (res, message = "Forbidden", error = null) => {
-  return (errorResponse = (res, 403, message, error));
+  return errorResponse(res, 403, message, error);
 };
 
 const notFound = (res, message = "Not Found", error = null) => {
-  return (errorResponse = (res, 404, message, error));
+  return errorResponse(res, 404, message, error);
 };
 
 const serverError = (res, message = "Internal Server Error", error = null) => {
-  return (errorResponse = (res, 500, message, error ?? new Error(message)));
+  return errorResponse(res, 500, message, error ?? new Error(message));
 };
 
 export {
