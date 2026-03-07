@@ -3,6 +3,7 @@ import { getImage } from "../utility/utils.js";
 
 class DoctorService {
   constructor() {}
+
   static async createDoctorField(doctorData) {
     const {
       name,
@@ -36,6 +37,28 @@ class DoctorService {
     });
 
     return doctor;
+  }
+
+  static async findUserById(userId) {
+    return await Doctor.findOne({ _id: userId }).exec();
+  }
+
+  static async checkDuplicateUser(username, roles) {
+    return await Doctor.findOne({ username: username, roles: roles }).exec();
+  }
+
+  static async findUserByEmailOrPhone(identifier) {
+    return await Doctor.findOne({
+      $or: [{ phone: identifier }, { email: identifier }],
+    }).exec();
+  }
+
+  static async encryptPassword(password) {
+    return await bcrypt.hash(password, 10);
+  }
+
+  static async deleteUserFields(id) {
+    return await Doctor.deleteOne(id);
   }
 }
 
