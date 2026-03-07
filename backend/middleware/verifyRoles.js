@@ -1,4 +1,4 @@
-const { unauthorized } = require("../utility/response");
+import { unauthorized } from "../utility/response.js";
 
 const verifyRoles = (...allowedRoles) => {
   return (req, res, next) => {
