@@ -4,25 +4,25 @@
  * @param {number} statusCode
  * @param {object} body
  */
-export function sendResponse(res, statusCode, body) {
+const sendResponse = (res, statusCode, body) => {
   res.status(statusCode).json(body);
-}
+};
 
 // Success helpers
-export function ok(res, data = null, message = "Success") {
-  return sendResponse(res, 200, { status: "success", message, data });
-}
+const ok = (res, data = null, message = "Success") => {
+  return (sendResponse = (res, 200, { status: "success", message, data }));
+};
 
-export function created(res, data = null, message = "Resource created") {
-  return sendResponse(res, 201, { status: "success", message, data });
-}
+const created = (res, data = null, message = "Resource created") => {
+  return (sendResponse = (res, 201, { status: "success", message, data }));
+};
 
-export function noContent(res) {
+const noContent = (res) => {
   return res.sendStatus(204);
-}
+};
 
 // Error helpers
-export function errorResponse(res, statusCode, message, error = null) {
+const errorResponse = (res, statusCode, message, error = null) => {
   const body = {
     status: "error",
     message,
@@ -39,30 +39,37 @@ export function errorResponse(res, statusCode, message, error = null) {
     console.error(`[${statusCode}] ${message}`, error);
   }
 
-  return sendResponse(res, statusCode, body);
-}
+  return (sendResponse = (res, statusCode, body));
+};
 
 // Convenience wrappers (keep only the ones you actually use)
-export function badRequest(res, message = "Bad Request", error = null) {
-  return errorResponse(res, 400, message, error);
-}
+const badRequest = (res, message = "Bad Request", error = null) => {
+  return (errorResponse = (res, 400, message, error));
+};
 
-export function unauthorized(res, message = "Unauthorized", error = null) {
-  return errorResponse(res, 401, message, error);
-}
+const unauthorized = (res, message = "Unauthorized", error = null) => {
+  return (errorResponse = (res, 401, message, error));
+};
 
-export function forbidden(res, message = "Forbidden", error = null) {
-  return errorResponse(res, 403, message, error);
-}
+const forbidden = (res, message = "Forbidden", error = null) => {
+  return (errorResponse = (res, 403, message, error));
+};
 
-export function notFound(res, message = "Not Found", error = null) {
-  return errorResponse(res, 404, message, error);
-}
+const notFound = (res, message = "Not Found", error = null) => {
+  return (errorResponse = (res, 404, message, error));
+};
 
-export function serverError(
-  res,
-  message = "Internal Server Error",
-  error = null,
-) {
-  return errorResponse(res, 500, message, error ?? new Error(message));
-}
+const serverError = (res, message = "Internal Server Error", error = null) => {
+  return (errorResponse = (res, 500, message, error ?? new Error(message)));
+};
+
+export {
+  ok,
+  created,
+  noContent,
+  badRequest,
+  unauthorized,
+  forbidden,
+  notFound,
+  serverError,
+};
