@@ -1,39 +1,35 @@
 import Doctor from "../models/doctorModel.js";
-import { getImage } from "../utility/utils.js";
 
 class DoctorService {
   constructor() {}
 
-  static async createDoctorField(doctorData) {
+  static async createDoctorField(request, hashPassword, role, imageUrl) {
     const {
       name,
       email,
-      password,
       speciality,
       degree,
       experience,
       about,
       fees,
       address,
-    } = doctorData.body;
-    // handles image upload
-    const file = doctorData.file;
-    if (!file) {
-      throw new Error("Image file is required");
-    }
-    const imageUrl = await getImage(doctorData);
+    } = request.body;
+
+    if (!imageUrl) throw new Error("Image upload failed");
+    if (!name || !email) throw new Error("Name & email required");
 
     const doctor = await Doctor.create({
-      name,
-      email,
-      password,
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password: hashPassword,
       speciality,
       degree,
       experience,
       about,
       fees,
       address,
-      imageUrl,
+      roles: [role],
+      image: imageUrl,
     });
 
     return doctor;
@@ -62,4 +58,4 @@ class DoctorService {
   }
 }
 
-export default new DoctorService();
+export default DoctorService;
