@@ -1,9 +1,3 @@
-const validatePassword = (password) => {
-  const regex =
-    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/;
-  return regex.test(password);
-};
-
 const getImage = async (req) => {
   const fileName = req.file.filename;
   const basePath = `${req.protocol}://${req.get("host")}/public/upload/`;
@@ -25,4 +19,4 @@ const getGalleryImages = async (req) => {
   return images;
 };
 
-export { validatePassword, getImage, getGalleryImages };
+export { getImage, getGalleryImages };
