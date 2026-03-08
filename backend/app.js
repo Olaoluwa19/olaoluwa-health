@@ -1,13 +1,13 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 import api from "./routes/api.js";
-import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import credentials from "./middleware/credentials.js";
 import corsOptions from "./config/corsOption.js";
 import errorHandler from "./middleware/errorHandler.js";
-import { logger } from "./middleware/logEvent.js";
+import { logger } from "./middleware/logEvents.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Define __dirname and __filename for ESM compatibility
 const __filename = fileURLToPath(import.meta.url);
@@ -54,6 +54,6 @@ app.all("/*path", (req, res) => {
   }
 });
 
-app.use(errorHandler());
+app.use(errorHandler);
 
 export default app;
