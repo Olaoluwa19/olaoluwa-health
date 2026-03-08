@@ -5,7 +5,7 @@ const doctorSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     roles: {
-      type: [{ type: Number, enum: [5684] }],
+      type: [{ type: Number, enum: [5684, 1973, 3956] }],
     },
     password: { type: String, required: true },
     image: { type: String, required: true },
@@ -13,7 +13,7 @@ const doctorSchema = new mongoose.Schema(
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },
-    available: { type: Boolean, required: true },
+    available: { type: Boolean, default: true },
     fees: { type: Number, required: true },
     address: { type: Object, required: true },
     slots_booked: { type: Object, default: {} },
