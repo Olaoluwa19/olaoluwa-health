@@ -31,12 +31,12 @@ const errorResponse = (res, statusCode, message, error = null) => {
   // Include error detail in development or when explicitly wanted
   if (process.env.NODE_ENV !== "production" && error) {
     body.error = error instanceof Error ? error.message : String(error);
-    // body.stack = error?.stack;
+    body.stack = error?.stack;
   }
 
-  // Always log real errors (4xx usually not)
+  // logs real errors to the console for debugging
   if (statusCode >= 500) {
-    console.error(`[${statusCode}] ${message}:`, error.message);
+    console.error(`[${statusCode}] ${message}:`, error);
   }
 
   return sendResponse(res, statusCode, body);
