@@ -5,3 +5,9 @@ TO GENERATE RANDOM SECRETE KEY:
 run in bash terminal:
 1. openssl rand -hex 32
 2. openssl rand -base64 48
+
+
+Tools:
+https://onlinetools.com/json/stringify-json
+https://www.base64-image.de/
+https://www.remove.bg/upload
