@@ -2,21 +2,16 @@ import mongoose from "mongoose";
 
 const doctorSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    roles: {
-      type: [{ type: Number, enum: [5684, 1973, 3956] }],
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-    password: { type: String, required: true },
-    image: { type: String, required: true },
+    slots_booked: { type: Object, default: {} },
     speciality: { type: String, required: true },
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },
     available: { type: Boolean, default: true },
-    fees: { type: Number, required: true },
-    address: { type: Object, required: true },
-    slots_booked: { type: Object, default: {} },
   },
   { timestamps: true },
   { minimize: false },
