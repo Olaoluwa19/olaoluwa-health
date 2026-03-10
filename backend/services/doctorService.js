@@ -1,4 +1,5 @@
 import Doctor from "../models/doctorModel.js";
+import validator from "validator";
 
 class DoctorService {
   constructor() {}
@@ -15,8 +16,11 @@ class DoctorService {
       address,
     } = request.body;
 
+    // Basic validations
     if (!imageUrl) throw new Error("Image upload failed");
     if (!name || !email) throw new Error("Name & email required");
+    // Simple email format validation
+    if (!validator.isEmail(email)) throw new Error("Invalid email format");
 
     const doctor = await Doctor.create({
       name: name.trim(),
@@ -26,8 +30,8 @@ class DoctorService {
       degree,
       experience,
       about,
-      fees,
-      address,
+      fees: Number(fees),
+      address: JSON.parse(address),
       roles: [role],
       image: imageUrl,
     });
@@ -35,15 +39,15 @@ class DoctorService {
     return doctor;
   }
 
-  static async findUserById(userId) {
+  static async findDoctorById(userId) {
     return await Doctor.findOne({ _id: userId }).exec();
   }
 
-  static async checkDuplicateUser(username, roles) {
+  static async checkDuplicateDoctor(username, roles) {
     return await Doctor.findOne({ username: username, roles: roles }).exec();
   }
 
-  static async findUserByEmailOrPhone(identifier) {
+  static async findDoctorByEmailOrPhone(identifier) {
     return await Doctor.findOne({
       $or: [{ phone: identifier }, { email: identifier }],
     }).exec();
@@ -53,8 +57,14 @@ class DoctorService {
     return await bcrypt.hash(password, 10);
   }
 
-  static async deleteUserFields(id) {
+  static async deleteDeleteFields(id) {
     return await Doctor.deleteOne(id);
+  }
+
+  static async populateDoctor(id) {
+    return await Doctor.findById(id).select(
+      "-password -refreshToken -createdAt -updatedAt",
+    );
   }
 }
 
