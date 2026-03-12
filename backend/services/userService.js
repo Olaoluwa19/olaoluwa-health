@@ -4,8 +4,13 @@ import validator from "validator";
 class UserService {
   constructor() {}
 
-  static async createUserField(request, hashPassword, role, imageUrl) {
-    const { name, email, phone, roles, gender, dob, fees, address } =
+  static async createUserField(
+    request,
+    hashedPassword,
+    imageUrl,
+    doctorFieldId,
+  ) {
+    const { name, email, phone, gender, dob, fees, address, role } =
       request.body;
 
     // Basic validations
@@ -17,15 +22,15 @@ class UserService {
     const user = await User.create({
       name: name.trim(),
       email: email.toLowerCase().trim(),
-      password: hashPassword,
+      password: hashedPassword,
       phone,
-      roles,
       gender,
       dob,
       fees: Number(fees),
       address: JSON.parse(address),
-      roles: [roles], // Ensure roles is an array
+      roles: [role], // Ensure roles is an array
       image: imageUrl,
+      doctorFields: doctorFieldId || null, // Link to doctorFields if applicable
     });
 
     return user;
@@ -35,8 +40,8 @@ class UserService {
     return await User.findOne({ _id: userId }).exec();
   }
 
-  static async checkDuplicateUser(username, roles) {
-    return await User.findOne({ username, roles }).exec();
+  static async checkDuplicateUser(email, roles) {
+    return await User.findOne({ email, roles }).exec();
   }
 
   static async findUserByEmailOrPhone(identifier) {
