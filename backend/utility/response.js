@@ -55,6 +55,10 @@ const forbidden = (res, message = "Forbidden", error = null) => {
   return errorResponse(res, 403, message, error);
 };
 
+const conflict = (res, message = "Conflict", error = null) => {
+  return errorResponse(res, 409, message, error);
+};
+
 const notFound = (res, message = "Not Found", error = null) => {
   return errorResponse(res, 404, message, error);
 };
@@ -70,6 +74,7 @@ export {
   badRequest,
   unauthorized,
   forbidden,
+  conflict,
   notFound,
   serverError,
 };
