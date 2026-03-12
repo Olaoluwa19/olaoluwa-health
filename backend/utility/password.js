@@ -7,12 +7,12 @@ const validatePassword = (password) => {
   return regex.test(password);
 };
 
-const GenSalt = async () => {
+const genSalt = async () => {
   return await bcrypt.genSalt(10);
 };
 
-const encryptPassword = async (password) => {
-  const salt = await GenSalt();
+const hashPassword = async (password) => {
+  const salt = await genSalt();
   return await bcrypt.hash(password, salt);
 };
 
@@ -71,7 +71,7 @@ const setRefreshTokenCookie = (res, refreshToken) => {
 
 export {
   validatePassword,
-  encryptPassword,
+  hashPassword,
   evaluatePassword,
   generateAccessToken,
   generateRefreshToken,
