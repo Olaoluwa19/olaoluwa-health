@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, default: "Not Selected" },
     dob: { type: String, default: "Not Selected" },
     isSuspended: { type: Boolean, default: false },
+    doctorFields: { type: mongoose.Schema.Types.ObjectId, ref: "Doctor" },
   },
   { timestamps: true },
   { minimize: false },
