@@ -1,7 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import DoctorService from "../services/doctorService.js";
 import { hashPassword, validatePassword } from "../utility/password.js";
-import { getImage } from "../utility/utils.js";
 import { badRequest, created, serverError } from "../utility/response.js";
 
 const createDoctor = async (req, res) => {
@@ -26,11 +25,6 @@ const createDoctor = async (req, res) => {
     if (!file) {
       return badRequest(res, "Image file is required");
     }
-    // const image = await getImage(req);
-
-    // if (!image) {
-    //   return badRequest(res, "Failed to process image");
-    // }
 
     // Image upload to cloudinary
     const imageUpload = await cloudinary.uploader.upload(file.path, {
