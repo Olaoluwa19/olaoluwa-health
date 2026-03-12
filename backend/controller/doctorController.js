@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import DoctorService from "../services/doctorService.js";
-import { encryptPassword, validatePassword } from "../utility/password.js";
+import { hashPassword, validatePassword } from "../utility/password.js";
 import { getImage } from "../utility/utils.js";
 import { badRequest, created, serverError } from "../utility/response.js";
 
@@ -19,7 +19,7 @@ const createDoctor = async (req, res) => {
       );
     }
 
-    const hashedPwd = await encryptPassword(password);
+    const hashedPwd = await hashPassword(password);
 
     // handles image upload
     const file = req.file;
