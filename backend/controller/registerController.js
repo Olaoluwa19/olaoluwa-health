@@ -2,26 +2,21 @@ import { badRequest } from "../utility/response";
 
 const createNewUser = async (req, res) => {
   // validate user roles
+  const { username, password, roles, address } = req.body;
+
   if (![5684, 1973, 3956].includes(roles)) {
-    return badRequest(res, "Invalid role specified");
+    return badRequest(res, `Invalid role specified, ${roles} is not allowed.`);
   }
 
   // check if password length greater than 6
   if (password.length < 6) {
-    return responseMessage(
-      res,
-      400,
-      false,
-      "Password must be at least 6 characters",
-    );
+    return badRequest(res, "Password must be at least 6 characters");
   }
 
   // check if password matches regex
   if (!validatePassword(password)) {
-    return responseMessage(
+    return badRequest(
       res,
-      400,
-      false,
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     );
   }
@@ -55,6 +50,8 @@ const createNewUser = async (req, res) => {
     console.log(populatedUser);
     return res.status(201).json(populatedUser);
   } catch (error) {
-    return serverErrorMessage(res, error);
+    return serverError(res, error);
   }
 };
+
+export default createNewUser;
