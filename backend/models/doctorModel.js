@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 
 const doctorSchema = new mongoose.Schema(
   {
-    slots_booked: { type: Object, default: {} },
     speciality: { type: String, required: true },
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },
     available: { type: Boolean, default: true },
+    slots_booked: { type: Object, default: {} },
   },
   { timestamps: true },
   { minimize: false },
