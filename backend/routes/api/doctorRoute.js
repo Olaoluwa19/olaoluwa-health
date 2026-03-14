@@ -1,5 +1,5 @@
 import express from "express";
-import { createDoctor } from "../../controller/doctorController.js";
+import { createDoctor } from "../../controllers/doctorController.js";
 import upload from "../../middleware/multer.js";
 
 const adminRouter = express.Router();
