@@ -11,3 +11,12 @@ Tools:
 https://onlinetools.com/json/stringify-json
 https://www.base64-image.de/
 https://www.remove.bg/upload
+
+doctorsField: {
+    "speciality":"Dermatologist"
+    "degree":"MBBS"
+    "experience":"1 Years"
+    "about":"Dr. Sarah has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Sarah has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies."
+    "fees":30
+    "available":false
+}
