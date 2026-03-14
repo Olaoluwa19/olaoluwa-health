@@ -2,15 +2,16 @@ import { v2 as cloudinary } from "cloudinary";
 import UserService from "../services/userService.js";
 import DoctorService from "../services/doctorService.js";
 import { validatePassword, hashPassword } from "../utility/password.js";
-import { badRequest, conflict } from "../utility/response.js";
+import {
+  badRequest,
+  conflict,
+  serverError,
+  created,
+} from "../utility/response.js";
 
 const createNewUser = async (req, res) => {
   // validate user roles
-  const { email, password, roles, doctorFields } = req.body;
-
-  if (![5684, 1973, 3956].includes(roles)) {
-    return badRequest(res, `Invalid role specified, ${roles} is not allowed.`);
-  }
+  const { email, password, roles, doctorsField } = req.body;
 
   // check if password length greater than 6
   if (password.length < 6) {
@@ -26,7 +27,6 @@ const createNewUser = async (req, res) => {
   }
 
   // check for duplicate user
-
   const duplicate = await UserService.checkDuplicateUser(email, roles);
 
   if (duplicate) {
@@ -42,7 +42,7 @@ const createNewUser = async (req, res) => {
   // Image upload to cloudinary
   const imageUpload = await cloudinary.uploader.upload(file.path, {
     resource_type: "image",
-    folder: "doctors",
+    folder: "users",
   });
 
   const imageUrl = imageUpload.secure_url;
@@ -50,12 +50,20 @@ const createNewUser = async (req, res) => {
   try {
     // create doctor document
     if (roles === 1973) {
-      if (!doctorFields) {
+      if (!doctorsField) {
         return badRequest(res, "Doctor fields are required for doctor role");
       }
     }
+    if (roles === 5684 || roles === 3956) {
+      if (doctorsField) {
+        return badRequest(
+          res,
+          "Doctor fields should not be provided for non-doctor roles",
+        );
+      }
+    }
     const doctorDoc = await DoctorService.createDoctorField({
-      body: { ...doctorFields },
+      body: { ...doctorsField },
     });
 
     // hash the password
@@ -65,15 +73,15 @@ const createNewUser = async (req, res) => {
     const newUser = await UserService.createUserField(
       req,
       hashedPwd,
-      imageUrl,
       doctorDoc._id,
+      imageUrl,
     );
 
     const populatedUser = await UserService.populateUser(newUser._id);
 
-    return created(res, populatedUser, "User Registered successfully☑️!");
+    return created(res, populatedUser, "User Registered successfully☺️☑️!");
   } catch (error) {
-    return serverError(res, "Failed to Register new User", error);
+    return serverError(res, "Failed to Register new User😔❌", error);
   }
 };
 
