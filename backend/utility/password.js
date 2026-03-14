@@ -16,7 +16,7 @@ const hashPassword = async (password) => {
   return await bcrypt.hash(password, salt);
 };
 
-const evaluatePassword = async (password, hash) => {
+const comparePassword = async (password, hash) => {
   return await bcrypt.compare(password, hash);
 };
 
@@ -72,7 +72,7 @@ const setRefreshTokenCookie = (res, refreshToken) => {
 export {
   validatePassword,
   hashPassword,
-  evaluatePassword,
+  comparePassword,
   generateAccessToken,
   generateRefreshToken,
   setRefreshTokenCookie,
