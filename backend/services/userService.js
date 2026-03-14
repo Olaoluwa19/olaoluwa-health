@@ -7,17 +7,19 @@ class UserService {
   static async createUserField(
     request,
     hashedPassword,
-    imageUrl,
     doctorFieldId,
+    imageUrl,
   ) {
-    const { name, email, phone, gender, dob, fees, address, role } =
-      request.body;
+    const { name, email, phone, gender, dob, address, roles } = request.body;
 
     // Basic validations
     if (!imageUrl) throw new Error("Image upload failed");
     if (!name || !email) throw new Error("Name & email required");
     // Simple email format validation
     if (!validator.isEmail(email)) throw new Error("Invalid email format");
+    // Validate role
+    if (![5684, 1973, 3956].includes(roles))
+      throw new Error(`Invalid role specified, ${roles} is not allowed.`);
 
     const user = await User.create({
       name: name.trim(),
@@ -26,11 +28,10 @@ class UserService {
       phone,
       gender,
       dob,
-      fees: Number(fees),
-      address: JSON.parse(address),
-      roles: [role], // Ensure roles is an array
+      address: address || {},
+      roles: [roles], // Ensure roles is an array
       image: imageUrl,
-      doctorFields: doctorFieldId || null, // Link to doctorFields if applicable
+      doctorsField: doctorFieldId || null, // Link to doctorsField if applicable
     });
 
     return user;
@@ -57,7 +58,7 @@ class UserService {
   static async populateUser(id) {
     return await User.findById(id)
       .populate({
-        path: "doctorFields",
+        path: "doctorsField",
         select: "-password -refreshToken -createdAt -updatedAt",
       })
       .exec();
